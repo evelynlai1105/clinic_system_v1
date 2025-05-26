@@ -72,7 +72,7 @@ python app.py
 
 ## 開發者
 
-[Evelyn.L]
+[您的名字]
 
 ## 授權
 
