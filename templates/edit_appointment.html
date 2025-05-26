@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}編輯掛號資訊{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>編輯掛號資訊</h2>
+    
+    <form method="POST" action="{{ url_for('edit_appointment', id=appointment.id) }}">
+        <div class="mb-3">
+            <label for="patient_id" class="form-label">病患</label>
+            <select class="form-select" id="patient_id" name="patient_id" required>
+                {% for patient in patients %}
+                <option value="{{ patient.id }}" {% if appointment.patient_id == patient.id %}selected{% endif %}>{{ patient.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="doctor_id" class="form-label">醫師</label>
+            <select class="form-select" id="doctor_id" name="doctor_id" required>
+                {% for doctor in doctors %}
+                <option value="{{ doctor.id }}" {% if appointment.doctor_id == doctor.id %}selected{% endif %}>{{ doctor.name }} - {{ doctor.department }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="datetime" class="form-label">掛號時間</label>
+            <input type="datetime-local" class="form-control" id="datetime" name="datetime" value="{{ appointment.datetime.strftime('%Y-%m-%dT%H:%M') }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="complaint" class="form-label">主訴</label>
+            <textarea class="form-control" id="complaint" name="complaint" required>{{ appointment.complaint }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">狀態</label>
+            <select class="form-select" id="status" name="status" required>
+                <option value="pending" {% if appointment.status == 'pending' %}selected{% endif %}>待處理</option>
+                <option value="completed" {% if appointment.status == 'completed' %}selected{% endif %}>已完成</option>
+                <option value="cancelled" {% if appointment.status == 'cancelled' %}selected{% endif %}>已取消</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">儲存變更</button>
+        <a href="{{ url_for('appointments') }}" class="btn btn-secondary">取消</a>
+    </form>
+
+</div>
+{% endblock %} 

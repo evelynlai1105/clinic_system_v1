@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}藥品詳細資訊{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>藥品詳細資訊</h2>
+    
+    <div class="card">
+        <div class="card-header">
+            藥品 ID: {{ medicine.id }}
+        </div>
+        <div class="card-body">
+            <p><strong>藥品名稱:</strong> {{ medicine.name }}</p>
+            <p><strong>單位:</strong> {{ medicine.unit }}</p>
+            <p><strong>庫存量:</strong> {{ medicine.stock }}</p>
+            <p><strong>供應商:</strong> {{ medicine.supplier }}</p>
+            <p><strong>建立時間:</strong> {{ medicine.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>更新時間:</strong> {{ medicine.updated_at.strftime('%Y-%m-%d %H:%M') }}</p>
+        </div>
+    </div>
+    
+    <a href="{{ url_for('medicines') }}" class="btn btn-secondary mt-3">回到藥品列表</a>
+
+</div>
+{% endblock %} 

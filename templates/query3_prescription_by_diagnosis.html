@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}某診斷的處方用藥明細{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>某診斷的處方用藥明細</h2>
+    
+    <a href="{{ url_for('queries_index') }}" class="btn btn-secondary btn-sm mb-3">回到常用查詢</a>
+    
+    <form method="POST" action="{{ url_for('query3_prescription_by_diagnosis') }}">
+        <div class="mb-3">
+            <label for="diagnosis_id" class="form-label">選擇診斷：</label>
+            <select class="form-select" id="diagnosis_id" name="diagnosis_id" required>
+                <option value="">-- 請選擇診斷 --</option>
+                {% for diagnosis in diagnoses %}
+                <option value="{{ diagnosis.id }}" {% if selected_diagnosis and selected_diagnosis.id == diagnosis.id %}selected{% endif %}>{{ diagnosis.diagnosis_time.strftime('%Y-%m-%d %H:%M') }} - {{ diagnosis.diagnosis_text[:50] }}...</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">查詢</button>
+    </form>
+
+    {% if form_submitted and selected_diagnosis %}
+        <h3 class="mt-4">診斷 ({{ selected_diagnosis.diagnosis_time.strftime('%Y-%m-%d %H:%M') }} - {{ selected_diagnosis.diagnosis_text[:50] }}...) 的處方用藥明細：</h3>
+        {% if prescriptions %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>藥品名稱</th>
+                        <th>劑量</th>
+                        <th>天數</th>
+                        <th>頻率</th>
+                        <th>開立時間</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prescription in prescriptions %}
+                    <tr>
+                        <td>{{ prescription.medicine.name }}</td>
+                        <td>{{ prescription.dosage }}</td>
+                        <td>{{ prescription.days }}</td>
+                        <td>{{ prescription.frequency }}</td>
+                        <td>{{ prescription.prescribed_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>此診斷沒有找到處方用藥明細。</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %} 

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}開立最多的藥品排名{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>開立最多的藥品排名</h2>
+    
+    <a href="{{ url_for('queries_index') }}" class="btn btn-secondary btn-sm mb-3">回到常用查詢</a>
+    
+    {% if top_medicines %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>排名</th>
+                    <th>藥品名稱</th>
+                    <th>開立次數</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for medicine in top_medicines %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ medicine.name }}</td>
+                    <td>{{ medicine.prescription_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>沒有找到藥品處方記錄。</p>
+    {% endif %}
+</div>
+{% endblock %} 

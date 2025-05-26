@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}醫師詳細資訊{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>醫師詳細資訊</h2>
+    
+    <div class="card">
+        <div class="card-header">
+            醫師 ID: {{ doctor.id }}
+        </div>
+        <div class="card-body">
+            <p><strong>姓名:</strong> {{ doctor.name }}</p>
+            <p><strong>科別:</strong> {{ doctor.department }}</p>
+            <p><strong>專長:</strong> {{ doctor.specialty }}</p>
+            <p><strong>排班時段:</strong> {{ doctor.schedule }}</p>
+            <p><strong>建立時間:</strong> {{ doctor.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>更新時間:</strong> {{ doctor.updated_at.strftime('%Y-%m-%d %H:%M') }}</p>
+        </div>
+    </div>
+    
+    <a href="{{ url_for('doctors') }}" class="btn btn-secondary mt-3">回到醫師列表</a>
+
+</div>
+{% endblock %} 

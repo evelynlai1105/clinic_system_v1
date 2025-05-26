@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>醫師管理</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+            新增醫師
+        </button>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>科別</th>
+                <th>專長</th>
+                <th>排班時段</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doctor in doctors %}
+            <tr>
+                <td>{{ doctor.id }}</td>
+                <td>{{ doctor.name }}</td>
+                <td>{{ doctor.department }}</td>
+                <td>{{ doctor.specialty }}</td>
+                <td>{{ doctor.schedule }}</td>
+                <td>
+                    <a href="{{ url_for('doctor_details', id=doctor.id) }}" class="btn btn-sm btn-info">查看</a>
+                    <a href="{{ url_for('edit_doctor', id=doctor.id) }}" class="btn btn-sm btn-warning">編輯</a>
+                    <form action="{{ url_for('delete_doctor', id=doctor.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('確定要刪除醫師 {{ doctor.name }} 嗎？');">刪除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- 新增醫師 Modal -->
+<div class="modal fade" id="addDoctorModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">新增醫師</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('add_doctor') }}">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">姓名</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="department" class="form-label">科別</label>
+                        <input type="text" class="form-control" id="department" name="department" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="specialty" class="form-label">專長</label>
+                        <input type="text" class="form-control" id="specialty" name="specialty" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="schedule" class="form-label">排班時段</label>
+                        <textarea class="form-control" id="schedule" name="schedule" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">新增</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

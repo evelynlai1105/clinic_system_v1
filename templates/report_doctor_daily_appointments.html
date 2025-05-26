@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}當日醫師看診報表{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>當日醫師看診報表</h2>
+    
+    <a href="{{ url_for('queries_index') }}" class="btn btn-secondary btn-sm mb-3">回到常用查詢</a>
+
+    <form method="POST" action="{{ url_for('report_doctor_daily_appointments') }}">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="doctor_id" class="form-label">選擇醫師</label>
+                <select class="form-select" id="doctor_id" name="doctor_id" required>
+                    <option value="">-- 請選擇醫師 --</option>
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}" {% if selected_doctor and selected_doctor.id == doctor.id %}selected{% endif %}>{{ doctor.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="report_date" class="form-label">選擇日期</label>
+                <input type="date" class="form-control" id="report_date" name="report_date" value="{{ selected_date.strftime('%Y-%m-%d') if selected_date else '' }}" required>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">查詢</button>
+            </div>
+        </div>
+    </form>
+
+    {% if form_submitted %}
+        {% if selected_doctor and selected_date %}
+            <h4 class="mt-4">{{ selected_doctor.name }} 醫師 {{ selected_date.strftime('%Y年%m月%d日') }} 看診列表</h4>
+
+            {% if appointments %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>掛號時間</th>
+                                <th>病患姓名</th>
+                                <th>主訴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                            <tr>
+                                <td>{{ appointment.datetime.strftime('%H:%M') }}</td>
+                                <td>{{ appointment.patient.name }}</td>
+                                <td>{{ appointment.complaint }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3 text-end">
+                    <button class="btn btn-secondary" onclick="window.print();">列印報表</button>
+                </div>
+
+            {% else %}
+                <p>該醫師在所選日期沒有掛號記錄。</p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+</div>
+{% endblock %} 

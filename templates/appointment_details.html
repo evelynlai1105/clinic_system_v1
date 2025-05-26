@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}掛號詳細資訊{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>掛號詳細資訊</h2>
+    
+    <div class="card">
+        <div class="card-header">
+            掛號 ID: {{ appointment.id }}
+        </div>
+        <div class="card-body">
+            <p><strong>病患姓名:</strong> {{ appointment.patient.name }}</p>
+            <p><strong>醫師姓名:</strong> {{ appointment.doctor.name }}</p>
+            <p><strong>掛號時間:</strong> {{ appointment.datetime.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>主訴:</strong> {{ appointment.complaint }}</p>
+            <p><strong>狀態:</strong> {{ appointment.status }}</p>
+            <p><strong>建立時間:</strong> {{ appointment.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>更新時間:</strong> {{ appointment.updated_at.strftime('%Y-%m-%d %H:%M') }}</p>
+            
+            {% if appointment.diagnosis %}
+            <h4>相關診斷資訊：</h4>
+            <p><strong>診斷內容:</strong> {{ appointment.diagnosis.diagnosis_text }}</p>
+            <p><strong>醫師建議:</strong> {{ appointment.diagnosis.doctor_advice }}</p>
+            <p><strong>診斷時間:</strong> {{ appointment.diagnosis.diagnosis_time.strftime('%Y-%m-%d %H:%M') }}</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <a href="{{ url_for('appointments') }}" class="btn btn-secondary mt-3">回到掛號列表</a>
+
+</div>
+{% endblock %} 

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>藥品管理</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMedicineModal">
+            新增藥品
+        </button>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>藥品名稱</th>
+                <th>單位</th>
+                <th>庫存量</th>
+                <th>供應商</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicine in medicines %}
+            <tr>
+                <td>{{ medicine.id }}</td>
+                <td>{{ medicine.name }}</td>
+                <td>{{ medicine.unit }}</td>
+                <td>{{ medicine.stock }}
+                    {% if medicine.stock < 10 %}
+                        <i class="bi bi-exclamation-triangle-fill text-warning" title="庫存不足！"></i>
+                    {% endif %}
+                </td>
+                <td>{{ medicine.supplier }}</td>
+                <td>
+                    <a href="{{ url_for('medicine_details', id=medicine.id) }}" class="btn btn-sm btn-info">查看</a>
+                    <a href="{{ url_for('edit_medicine', id=medicine.id) }}" class="btn btn-sm btn-warning">編輯</a>
+                    <form action="{{ url_for('delete_medicine', id=medicine.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('確定要刪除藥品 {{ medicine.name }} 嗎？');">刪除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- 新增藥品 Modal -->
+<div class="modal fade" id="addMedicineModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">新增藥品</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('add_medicine') }}">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">藥品名稱</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="unit" class="form-label">單位</label>
+                        <input type="text" class="form-control" id="unit" name="unit" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stock" class="form-label">庫存量</label>
+                        <input type="number" class="form-control" id="stock" name="stock" required min="0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="supplier" class="form-label">供應商</label>
+                        <input type="text" class="form-control" id="supplier" name="supplier" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">新增</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

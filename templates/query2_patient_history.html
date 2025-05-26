@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}病患歷史看診紀錄與診斷{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>病患歷史看診紀錄與診斷</h2>
+    
+    <a href="{{ url_for('queries_index') }}" class="btn btn-secondary btn-sm mb-3">回到常用查詢</a>
+    
+    <form method="POST" action="{{ url_for('query2_patient_history') }}">
+        <div class="mb-3">
+            <label for="patient_id" class="form-label">選擇病患：</label>
+            <select class="form-select" id="patient_id" name="patient_id" required>
+                <option value="">-- 請選擇病患 --</option>
+                {% for patient in patients %}
+                <option value="{{ patient.id }}" {% if selected_patient and selected_patient.id == patient.id %}selected{% endif %}>{{ patient.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">查詢</button>
+    </form>
+
+    {% if form_submitted and selected_patient %}
+        <h3 class="mt-4">{{ selected_patient.name }}的歷史看診紀錄：</h3>
+        {% if appointments %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>掛號 ID</th>
+                        <th>掛號時間</th>
+                        <th>醫師姓名</th>
+                        <th>主訴</th>
+                        <th>診斷內容</th>
+                        <th>醫師建議</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment.id }}</td>
+                        <td>{{ appointment.datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ appointment.doctor.name }}</td>
+                        <td>{{ appointment.complaint }}</td>
+                        <td>
+                            {% if appointment.diagnosis %}
+                                {{ appointment.diagnosis.diagnosis_text }}
+                            {% else %}
+                                暫無診斷
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if appointment.diagnosis %}
+                                {{ appointment.diagnosis.doctor_advice }}
+                            {% else %}
+                                暫無建議
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>{{ selected_patient.name }}沒有找到歷史看診紀錄。</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %} 

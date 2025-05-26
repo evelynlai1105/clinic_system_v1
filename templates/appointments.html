@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>掛號管理</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAppointmentModal">
+            新增掛號
+        </button>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>病患</th>
+                <th>醫師</th>
+                <th>掛號時間</th>
+                <th>主訴</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.id }}</td>
+                <td>{{ appointment.patient.name }}</td>
+                <td>{{ appointment.doctor.name }}</td>
+                <td>{{ appointment.datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ appointment.complaint }}</td>
+                <td>
+                    <a href="{{ url_for('appointment_details', id=appointment.id) }}" class="btn btn-sm btn-info">查看</a>
+                    <a href="{{ url_for('edit_appointment', id=appointment.id) }}" class="btn btn-sm btn-warning">編輯</a>
+                    <form action="{{ url_for('delete_appointment', id=appointment.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('確定要刪除此掛號記錄嗎？');">刪除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- 新增掛號 Modal -->
+<div class="modal fade" id="addAppointmentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">新增掛號</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('add_appointment') }}">
+                    <div class="mb-3">
+                        <label for="patient_id" class="form-label">病患</label>
+                        <select class="form-select" id="patient_id" name="patient_id" required>
+                            {% for patient in patients %}
+                            <option value="{{ patient.id }}">{{ patient.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="doctor_id" class="form-label">醫師</label>
+                        <select class="form-select" id="doctor_id" name="doctor_id" required>
+                            {% for doctor in doctors %}
+                            <option value="{{ doctor.id }}">{{ doctor.name }} - {{ doctor.department }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="datetime" class="form-label">掛號時間</label>
+                        <input type="datetime-local" class="form-control" id="datetime" name="datetime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="complaint" class="form-label">主訴</label>
+                        <textarea class="form-control" id="complaint" name="complaint" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">新增</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
