@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}編輯藥品資訊{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>編輯藥品資訊</h2>
+    
+    <form method="POST" action="{{ url_for('edit_medicine', id=medicine.id) }}">
+        <div class="mb-3">
+            <label for="name" class="form-label">藥品名稱</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ medicine.name }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="unit" class="form-label">單位</label>
+            <input type="text" class="form-control" id="unit" name="unit" value="{{ medicine.unit }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="stock" class="form-label">庫存量</label>
+            <input type="number" class="form-control" id="stock" name="stock" value="{{ medicine.stock }}" required min="0">
+        </div>
+        <div class="mb-3">
+            <label for="supplier" class="form-label">供應商</label>
+            <input type="text" class="form-control" id="supplier" name="supplier" value="{{ medicine.supplier }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">儲存變更</button>
+        <a href="{{ url_for('medicines') }}" class="btn btn-secondary">取消</a>
+    </form>
+
+</div>
+{% endblock %} 

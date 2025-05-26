@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}病患詳細資訊{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>病患詳細資訊</h2>
+    
+    <div class="card">
+        <div class="card-header">
+            病患 ID: {{ patient.id }}
+        </div>
+        <div class="card-body">
+            <p><strong>姓名:</strong> {{ patient.name }}</p>
+            <p><strong>性別:</strong> {{ patient.gender }}</p>
+            <p><strong>生日:</strong> {{ patient.birthday.strftime('%Y-%m-%d') }}</p>
+            <p><strong>電話:</strong> {{ patient.phone }}</p>
+            <p><strong>地址:</strong> {{ patient.address }}</p>
+            <p><strong>建立時間:</strong> {{ patient.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>更新時間:</strong> {{ patient.updated_at.strftime('%Y-%m-%d %H:%M') }}</p>
+        </div>
+    </div>
+    
+    <a href="{{ url_for('patients') }}" class="btn btn-secondary mt-3">回到病患列表</a>
+
+</div>
+{% endblock %} 
