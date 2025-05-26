@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}查詢特定日期的掛號紀錄{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>查詢特定日期的掛號紀錄</h2>
+    
+    <a href="{{ url_for('queries_index') }}" class="btn btn-secondary btn-sm mb-3">回到常用查詢</a>
+    
+    <form method="POST" action="{{ url_for('query1_appointments_by_date') }}">
+        <div class="mb-3">
+            <label for="query_date" class="form-label">選擇日期：</label>
+            <input type="date" class="form-control" id="query_date" name="query_date" value="{{ selected_date.strftime('%Y-%m-%d') if selected_date else '' }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">查詢</button>
+    </form>
+
+    {% if form_submitted %}
+        <h3 class="mt-4">{{ selected_date.strftime('%Y年%m月%d日') if selected_date else '所選日期' }}的掛號紀錄：</h3>
+        {% if appointments %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>掛號 ID</th>
+                        <th>病患姓名</th>
+                        <th>醫師姓名</th>
+                        <th>掛號時間</th>
+                        <th>主訴</th>
+                        <th>狀態</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment.id }}</td>
+                        <td>{{ appointment.patient.name }}</td>
+                        <td>{{ appointment.doctor.name }}</td>
+                        <td>{{ appointment.datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ appointment.complaint }}</td>
+                        <td>{{ appointment.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>在{{ selected_date.strftime('%Y年%m月%d日') if selected_date else '所選日期' }}沒有找到掛號紀錄。</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %} 

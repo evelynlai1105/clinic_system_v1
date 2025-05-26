@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}醫師本週排班與掛號病患{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>醫師本週排班與掛號病患</h2>
+    
+    <a href="{{ url_for('queries_index') }}" class="btn btn-secondary btn-sm mb-3">回到常用查詢</a>
+    
+    <form method="POST" action="{{ url_for('query5_doctor_schedule_appointments') }}">
+        <div class="mb-3">
+            <label for="doctor_id" class="form-label">選擇醫師：</label>
+            <select class="form-select" id="doctor_id" name="doctor_id" required>
+                <option value="">-- 請選擇醫師 --</option>
+                {% for doctor in doctors %}
+                <option value="{{ doctor.id }}" {% if selected_doctor and selected_doctor.id == doctor.id %}selected{% endif %}>{{ doctor.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">查詢</button>
+    </form>
+
+    {% if form_submitted and selected_doctor %}
+        <h3 class="mt-4">{{ selected_doctor.name }} 醫師本週排班與掛號病患：</h3>
+        
+        <div class="card mb-3">
+            <div class="card-header">排班資訊</div>
+            <div class="card-body">
+                <p class="card-text">{{ selected_doctor.schedule }}</p>
+            </div>
+        </div>
+
+        <h4>本週掛號病患：</h4>
+        {% if weekly_appointments %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>掛號時間</th>
+                        <th>病患姓名</th>
+                        <th>主訴</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in weekly_appointments %}
+                    <tr>
+                        <td>{{ appointment.datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ appointment.patient.name }}</td>
+                        <td>{{ appointment.complaint }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>{{ selected_doctor.name }} 醫師本週沒有掛號病患。</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %} 

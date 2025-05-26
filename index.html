@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4">健康診所</h1>
+        {% if current_user.is_authenticated %}
+            <p>登入者: {{ current_user.username }} ({{ current_user.role.name }})</p>
+        {% endif %}
+        <h2 class="mb-4">歡迎使用診所醫療資訊系統</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">病患管理</h5>
+                <p class="card-text">管理病患基本資料、就醫紀錄</p>
+                <a href="{{ url_for('patients') }}" class="btn btn-primary">進入管理</a>
+            </div>
+        </div>
+    </div>
+    
+    {% if current_user.role.name == 'super_admin' or current_user.role.name == 'doctor' %}
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">醫師管理</h5>
+                <p class="card-text">管理醫師資料、排班資訊</p>
+                <a href="{{ url_for('doctors') }}" class="btn btn-primary">進入管理</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">掛號管理</h5>
+                <p class="card-text">處理掛號、看診排程</p>
+                <a href="{{ url_for('appointments') }}" class="btn btn-primary">進入管理</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">藥品管理</h5>
+                <p class="card-text">管理藥品庫存、處方資訊</p>
+                <a href="{{ url_for('medicines') }}" class="btn btn-primary">進入管理</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

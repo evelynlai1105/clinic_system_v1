@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}編輯醫師資訊{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>編輯醫師資訊</h2>
+    
+    <form method="POST" action="{{ url_for('edit_doctor', id=doctor.id) }}">
+        <div class="mb-3">
+            <label for="name" class="form-label">姓名</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ doctor.name }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="department" class="form-label">科別</label>
+            <input type="text" class="form-control" id="department" name="department" value="{{ doctor.department }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="specialty" class="form-label">專長</label>
+            <input type="text" class="form-control" id="specialty" name="specialty" value="{{ doctor.specialty }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="schedule" class="form-label">排班時段</label>
+            <textarea class="form-control" id="schedule" name="schedule" required>{{ doctor.schedule }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">儲存變更</button>
+        <a href="{{ url_for('doctors') }}" class="btn btn-secondary">取消</a>
+    </form>
+
+</div>
+{% endblock %} 

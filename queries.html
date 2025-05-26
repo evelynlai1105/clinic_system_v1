@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}常用查詢{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>常用查詢</h2>
+    <div class="list-group">
+        <a href="{{ url_for('query1_appointments_by_date') }}" class="list-group-item list-group-item-action">查詢 1：查詢特定日期的掛號紀錄</a>
+        <a href="{{ url_for('query2_patient_history') }}" class="list-group-item list-group-item-action">查詢 2：某位病患的歷史看診紀錄與診斷</a>
+        <a href="{{ url_for('query3_prescription_by_diagnosis') }}" class="list-group-item list-group-item-action">查詢 3：某診斷的處方用藥明細</a>
+        <a href="{{ url_for('query4_low_stock_medicines') }}" class="list-group-item list-group-item-action">查詢 4：查詢藥品庫存不足（低於門檻）</a>
+        <a href="{{ url_for('query5_doctor_schedule_appointments') }}" class="list-group-item list-group-item-action">查詢 5：某醫師本週排班與掛號病患</a>
+        <a href="{{ url_for('query6_top_prescribed_medicines') }}" class="list-group-item list-group-item-action">查詢 6：查詢開立最多的藥品排名</a>
+    </div>
+    
+    <h3 class="mt-4">報表列印</h3>
+    <div class="list-group">
+        <a href="{{ url_for('report_doctor_daily_appointments') }}" class="list-group-item list-group-item-action">當日醫師看診報表</a>
+        <a href="{{ url_for('report_medicine_reorder_list') }}" class="list-group-item list-group-item-action">藥品補貨單</a>
+    </div>
+
+</div>
+{% endblock %} 

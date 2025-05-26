@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}查詢藥品庫存不足{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>查詢藥品庫存不足（低於門檻）</h2>
+    
+    <a href="{{ url_for('queries_index') }}" class="btn btn-secondary btn-sm mb-3">回到常用查詢</a>
+    
+    <form method="POST" action="{{ url_for('query4_low_stock_medicines') }}">
+        <div class="mb-3">
+            <label for="threshold" class="form-label">庫存門檻值：</label>
+            <input type="number" class="form-control" id="threshold" name="threshold" value="{{ threshold if threshold is not none else '' }}" required min="0">
+        </div>
+        <button type="submit" class="btn btn-primary">查詢</button>
+    </form>
+
+    {% if form_submitted %}
+        <h3 class="mt-4">庫存量低於{{ threshold }}的藥品：</h3>
+        {% if low_stock_medicines %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>藥品名稱</th>
+                        <th>單位</th>
+                        <th>庫存量</th>
+                        <th>供應商</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medicine in low_stock_medicines %}
+                    <tr>
+                        <td>{{ medicine.name }}</td>
+                        <td>{{ medicine.unit }}</td>
+                        <td>{{ medicine.stock }}</td>
+                        <td>{{ medicine.supplier }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>沒有找到庫存量低於{{ threshold }}的藥品。</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %} 
